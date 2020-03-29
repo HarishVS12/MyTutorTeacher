@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,9 +27,11 @@ public class LoginActivity extends AppCompatActivity {
     public static final String COLLECTION_NAME = "teacher";
 
     private EditText ed_email, ed_password;
-    private Button btn_signIn, btn_register;
+    private TextView btn_register;
+    private Button btn_signIn;
     private String mail,password;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +52,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mail = ed_email.getText().toString();
                 password = ed_password.getText().toString();
-                if(!(TextUtils.isEmpty(mail) || TextUtils.isEmpty(password)))
-                    getData(mail, password);
+                if(!(TextUtils.isEmpty(mail) || TextUtils.isEmpty(password))){
+                    auth.signInWithEmailAndPassword(mail,password).
+                            addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
+                                    }else{
+                                        Toast.makeText(LoginActivity.this, "Invalid Email/Password", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+
                 else
                     Toast.makeText(LoginActivity.this, "Fill the details", Toast.LENGTH_SHORT).show();
             }
@@ -64,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_register = findViewById(R.id.btn_register);
 
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
     }
 
@@ -78,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot document : task.getResult()){
                                 Log.d("TAG",document.getId() + " => " + document.getData());
+                                startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
                                 Toast.makeText(LoginActivity.this,"Signed in Successfully!", Toast.LENGTH_SHORT).show();
                             }
                         }else{
