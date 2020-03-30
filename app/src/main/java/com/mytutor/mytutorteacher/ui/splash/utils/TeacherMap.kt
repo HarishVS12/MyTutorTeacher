@@ -11,6 +11,7 @@ package com.mytutor.mytutorstudent.ui.utils
     const val SPECIALISED_IN = "Specialized Area"
     const val UUID = "uuid"
     const val IS_APPOINTMENT = "Already_Appointed"
+    const val WALLET_AMOUNT = "Wallet Amount"
 
 
 }

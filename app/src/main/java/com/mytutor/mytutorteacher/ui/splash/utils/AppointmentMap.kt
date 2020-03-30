@@ -5,6 +5,7 @@ package com.mytutor.mytutorstudent.ui.utils
 @CreatedOn 3/29/2020
 */object AppointmentMap {
 
+    const val APPOINTMENT_ID = "appointment_id"
     const val TEACHER_NAME = "teacher_name"
     const val COST_PER_SESSION = "Cost per session"
     const val RATING = "Rating"

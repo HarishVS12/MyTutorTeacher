@@ -5,4 +5,8 @@
     <color name="red">#E53935</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF2196F3</color>
+
+    <!-- Chat Activity -->
+    <color name="localBackground">#827b92</color>
+    <color name="remoteBackground">#484258</color>
 </resources>

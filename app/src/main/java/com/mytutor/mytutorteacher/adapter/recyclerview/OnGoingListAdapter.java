@@ -50,5 +50,6 @@ import java.util.HashMap;
             student_mail = itemView.findViewById(R.id.container_appointment_mail);
             statusText = itemView.findViewById(R.id.container_appointment_STATUS);
         }
+
     }
 }
