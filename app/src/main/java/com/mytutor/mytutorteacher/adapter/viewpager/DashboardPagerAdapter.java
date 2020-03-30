@@ -18,7 +18,7 @@ import com.mytutor.mytutorteacher.ui.dashboard.ongoing.OnGoingFragment;
 @CreatedOn 3/28/2020
 */
 public class DashboardPagerAdapter extends FragmentStatePagerAdapter {
-    private static final String[] FRAGMENT_TYPES = {"REQUESTS", "APPOINTED", "ON GOING"};
+    private static final String[] FRAGMENT_TYPES = {"REQUESTS", "APPOINTED", "HISTORY"};
 
     public DashboardPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);

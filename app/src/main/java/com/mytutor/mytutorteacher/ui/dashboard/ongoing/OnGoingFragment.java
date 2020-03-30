@@ -11,10 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mytutor.mytutorteacher.R;
 import com.mytutor.mytutorteacher.adapter.recyclerview.OnGoingListAdapter;
+import com.mytutor.mytutorteacher.ui.utils.AppointmentMap;
+import com.mytutor.mytutorteacher.ui.utils.Collection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
 @Author cr7
@@ -23,6 +32,9 @@ import java.util.ArrayList;
 public class OnGoingFragment extends Fragment {
     public static final String FRAGMENT_TYPE = "fragment_type";
     private RecyclerView mRecyclerview;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth auth;
+    private ArrayList<HashMap<String,Object>> ongoingList = new ArrayList<>();
 
     private OnGoingListAdapter onGoingListAdapter;
     public static OnGoingFragment newInstance(String type) {
@@ -36,7 +48,10 @@ public class OnGoingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onGoingListAdapter=new OnGoingListAdapter(new ArrayList());
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        onGoingListAdapter=new OnGoingListAdapter(ongoingList);
     }
 
     @Nullable
@@ -52,4 +67,30 @@ public class OnGoingFragment extends Fragment {
         mRecyclerview.setAdapter(onGoingListAdapter);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        firebaseFirestore.collection(Collection.APPOINTMENTS)
+                .whereEqualTo(AppointmentMap.STATUS_CODE, -1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!ongoingList.isEmpty()) {
+                                ongoingList.clear();
+                            }
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                HashMap<String, Object> map = (HashMap<String, Object>) queryDocumentSnapshot.getData();
+                                ongoingList.add(map);
+                            }
+                            onGoingListAdapter.notifyDataSetChanged();
+
+                        }
+                    }
+                });
+    }
+
 }
