@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#e48900</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name = "StatusBarTranscluent" parent="Theme.MaterialComponents.NoActionBar" >

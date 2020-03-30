@@ -1,9 +1,9 @@
-package com.mytutor.mytutorteacher;
+package com.mytutor.mytutorteacher.ui.authentication.signup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.mytutor.mytutorteacher.R;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mytutor.mytutorteacher.ui.dashboard.DashboardActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class RegisterAct extends AppCompatActivity {
     private Button btn_register, btn_resume;
     private Spinner spinner; private String str_amOrPm;
     private String mail, pass, confPass, name, areaSpec, prefTime, costPerSess;
-    private String urlForResume;
+    private String urlForResume="";
     private static final String COLLECTION_NAME = "teacher";
 
     private FirebaseFirestore db;

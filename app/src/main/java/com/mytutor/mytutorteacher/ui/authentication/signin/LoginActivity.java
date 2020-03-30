@@ -1,8 +1,8 @@
-package com.mytutor.mytutorteacher;
+package com.mytutor.mytutorteacher.ui.authentication.signin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.mytutor.mytutorteacher.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mytutor.mytutorteacher.ui.authentication.signup.RegisterAct;
+import com.mytutor.mytutorteacher.ui.dashboard.DashboardActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText ed_email, ed_password;
     private TextView btn_register;
     private Button btn_signIn;
-    private String mail,password;
+    private String mail, password;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -43,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,RegisterAct.class));
+                startActivity(new Intent(LoginActivity.this, RegisterAct.class));
             }
         });
 
@@ -52,29 +54,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mail = ed_email.getText().toString();
                 password = ed_password.getText().toString();
-                if(!(TextUtils.isEmpty(mail) || TextUtils.isEmpty(password))){
-                    auth.signInWithEmailAndPassword(mail,password).
+                if (!(TextUtils.isEmpty(mail) || TextUtils.isEmpty(password))) {
+                    auth.signInWithEmailAndPassword(mail, password).
                             addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isSuccessful()){
-                                        startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
-                                    }else{
-                                        Toast.makeText(LoginActivity.this, "Invalid Email/Password", Toast.LENGTH_SHORT).show();
+                                    if (task.isSuccessful()) {
+                                        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "Invalid Email / password", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            });
-                }
 
-                else
+
+                                }
+
+
+                            });
+
+
+                } else
                     Toast.makeText(LoginActivity.this, "Fill the details", Toast.LENGTH_SHORT).show();
             }
         });
 
-
     }
 
-    public void declaration(){
+    public void declaration() {
         ed_email = findViewById(R.id.ed_MailId);
         ed_password = findViewById(R.id.ed_Pass);
         btn_signIn = findViewById(R.id.btn_signIn);
@@ -85,21 +90,21 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void getData(String pmail, String ppass){
+    public void getData(String pmail, String ppass) {
         db.collection(COLLECTION_NAME)
-                .whereEqualTo("Email",pmail)
-                .whereEqualTo("Password",ppass)
+                .whereEqualTo("Email", pmail)
+                .whereEqualTo("Password", ppass)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot document : task.getResult()){
-                                Log.d("TAG",document.getId() + " => " + document.getData());
-                                startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
-                                Toast.makeText(LoginActivity.this,"Signed in Successfully!", Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TAG", document.getId() + " => " + document.getData());
+                                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                                Toast.makeText(LoginActivity.this, "Signed in Successfully!", Toast.LENGTH_SHORT).show();
                             }
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this, "Account does Not Exists", Toast.LENGTH_SHORT).show();
                         }
                     }
