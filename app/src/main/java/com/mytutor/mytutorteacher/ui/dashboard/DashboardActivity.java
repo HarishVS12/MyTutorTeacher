@@ -106,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             Toast.makeText(DashboardActivity.this,"" + auth.getUid(), Toast.LENGTH_SHORT).show();
-                            long wallet = document.getLong("Wallet Amount");
+                            String wallet = document.getString("Wallet Amount");
                             Toast.makeText(DashboardActivity.this, "Wallet Amount: " + wallet, Toast.LENGTH_SHORT).show();
                         }
                     }

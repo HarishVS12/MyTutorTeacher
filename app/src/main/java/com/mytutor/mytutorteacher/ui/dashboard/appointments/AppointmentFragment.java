@@ -109,8 +109,8 @@ public class AppointmentFragment extends Fragment implements AppointmentListAdap
         appointment.put(AppointmentMap.TEACHER_NAME, map.get(TeacherMap.NAME));
         appointment.put(AppointmentMap.STATUS_CODE, -1);*/
         firebaseFirestore.collection(Collection.APPOINTMENTS)
-                .document(map.get(AppointmentMap.STUDENT_ID) + auth.getUid())
-                .update(AppointmentMap.STATUS_CODE, -1)
+                .document((String)map.get(AppointmentMap.UUID))
+                .update("status_code", -1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -118,13 +118,23 @@ public class AppointmentFragment extends Fragment implements AppointmentListAdap
                     }
                 });
 
+       /* firebaseFirestore.collection(Collection.TEACHER)
+                .document(auth.getUid())
+                .update(TeacherMap.IS_APPOINTMENT, false)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        onResume();
+                    }
+                });
+*/
     }
 
     @Override
     public void onAppointmentAccepted(int position) {
         final HashMap<String, Object> map = appointmentList.get(position);
         firebaseFirestore.collection(Collection.APPOINTMENTS)
-                .document(map.get(AppointmentMap.STUDENT_ID) + auth.getUid())
+                .document((String)map.get(AppointmentMap.UUID))
                 .update(AppointmentMap.STATUS_CODE, 1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

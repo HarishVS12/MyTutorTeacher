@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements TeacherListAdapter.Teacher
 
         firebaseFirestore.collection(Collection.APPOINTMENTS)
                 .whereEqualTo("teacher_id",auth.getUid())
-                .whereIn("status_code", Arrays.asList(1,2))
+                .whereEqualTo("status_code", 1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

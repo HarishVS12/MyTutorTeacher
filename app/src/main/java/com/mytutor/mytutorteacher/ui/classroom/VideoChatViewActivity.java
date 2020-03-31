@@ -272,14 +272,15 @@ public class VideoChatViewActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+
                     long cp = Long.parseLong(cost);
                     costOnWallet += cp;
-                    cost = String.valueOf(cp);
+                    String costTemp = String.valueOf(costOnWallet);
 
                     Log.i("BAI", "onSuccess: " + cp);
                     firebaseFirestore.collection(Collection.TEACHER)
                             .document(teacherId)
-                            .update(TeacherMap.WALLET_AMOUNT, cost)
+                            .update(TeacherMap.WALLET_AMOUNT, costTemp)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

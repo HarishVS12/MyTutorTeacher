@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,8 +23,10 @@ import com.mytutor.mytutorteacher.R;
 import com.mytutor.mytutorteacher.adapter.recyclerview.OnGoingListAdapter;
 import com.mytutor.mytutorteacher.ui.utils.AppointmentMap;
 import com.mytutor.mytutorteacher.ui.utils.Collection;
+import com.mytutor.mytutorteacher.ui.utils.TeacherMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /*
@@ -37,6 +41,7 @@ public class OnGoingFragment extends Fragment {
     private ArrayList<HashMap<String,Object>> ongoingList = new ArrayList<>();
 
     private OnGoingListAdapter onGoingListAdapter;
+
     public static OnGoingFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString(FRAGMENT_TYPE, type);
@@ -68,12 +73,17 @@ public class OnGoingFragment extends Fragment {
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    public boolean statusRejected(){
+        return true;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
         firebaseFirestore.collection(Collection.APPOINTMENTS)
-                .whereEqualTo(AppointmentMap.STATUS_CODE, -1)
+                .whereEqualTo("teacher_id",auth.getUid())
+                .whereEqualTo(AppointmentMap.STATUS_CODE,1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -87,7 +97,7 @@ public class OnGoingFragment extends Fragment {
                                 ongoingList.add(map);
                             }
                             onGoingListAdapter.notifyDataSetChanged();
-
+                            statusRejected();
                         }
                     }
                 });
