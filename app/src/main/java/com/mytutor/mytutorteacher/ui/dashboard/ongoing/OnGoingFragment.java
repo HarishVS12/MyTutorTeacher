@@ -83,7 +83,7 @@ public class OnGoingFragment extends Fragment {
 
         firebaseFirestore.collection(Collection.APPOINTMENTS)
                 .whereEqualTo("teacher_id",auth.getUid())
-                .whereEqualTo(AppointmentMap.STATUS_CODE,1)
+                .whereEqualTo(AppointmentMap.STATUS_CODE,-1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

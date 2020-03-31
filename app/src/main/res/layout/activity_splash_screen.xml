@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-medium"
-        android:text="My Tutor"
+        android:text="My Student"
 
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
